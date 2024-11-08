@@ -1,0 +1,18 @@
+.navbar {
+  background-color: #333; /* Color de fondo */
+  padding: 10px; /* Espaciado interno */
+}
+
+.navbar a {
+  color: white; /* Color del texto */
+  text-decoration: none; /* Sin subrayado */
+  margin: 0 15px; /* Espaciado entre enlaces */
+  padding: 5px 10px; /* Espaciado interno de los enlaces */
+  border-radius: 4px; /* Bordes redondeados */
+  float: left; /* Izquierda */
+  transition: background-color 0.3s; /* Transición suave */
+}
+
+.navbar a:hover {
+  background-color: #555; /* Color de fondo al pasar el ratón */
+}
