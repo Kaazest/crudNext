@@ -1,6 +1,10 @@
 "use client";
 import Modal from "@/components/Modal";
 import { useEffect, useState } from "react";
+import styles from "@/app/ver/Page.module.css";
+import NavBar from "@/components/navbar";
+import { useRouter } from "next/navigation";
+import NavPage from "@/components/Pagination";
 
 export default function HomePage() {
   const [data, setData] = useState([]);
@@ -32,14 +36,24 @@ export default function HomePage() {
       }
 
       // Actualiza el estado local
-      const updatedData = users.filter((user) =>
-        user.cedula === item.cedula ? { ...item, ...formValues } : item
-      );
+      const updatedData = users.filter((user) => user.cedula !== item.cedula);
       setData(updatedData);
     } catch (error) {
-      console.error("Error updating data:", error);
+      console.error("Error al eliminar datos:", error);
     }
   };
+
+  /*Para la barra de paginación*/
+  // const MyComponent = () => {
+  //   const router = useRouter();
+
+  //   const handleNavigationRight = () => {
+  //     router.push("/ver" + 1);
+  //   };
+  //   const handleNavigationLeft = () => {
+  //     router.push("/ver" - 1);
+  //   };
+  // };
 
   useEffect(() => {
     const fetchData = async () => {
@@ -101,84 +115,119 @@ export default function HomePage() {
       setData(updatedData);
       closeModal();
     } catch (error) {
-      console.error("Error updating data:", error);
+      console.error("Error al actualizar datos:", error);
     }
   };
 
   return (
-    <div>
-      <h1>Datos</h1>
-      <table>
-        <thead>
-          <tr>
-            <th>Nombre</th>
-            <th>Apellido</th>
-            <th>Edad</th>
-            <th>Cedula</th>
-            <th>###</th>
-          </tr>
-        </thead>
-        <tbody>
-          {users.map((item) => (
-            <tr key={item.cedula}>
-              <td>{item.nombre}</td>
-              <td>{item.apellido}</td>
-              <td>{item.edad}</td>
-              <td>{item.cedula}</td>
-              <td>
-                <button onClick={() => openModal(item)}>Editar</button>
-                <button onClick={() => handleDelete(item)}>Eliminar</button>
-              </td>
+    <>
+      <div className={styles.container}>
+        <h1>Datos</h1>
+        <NavBar />
+      </div>
+      <div
+        style={{
+          display: "flex",
+          flexDirection: "column",
+          alignItems: "center",
+          gap: "20px",
+          marginTop: "50px",
+        }}
+      >
+        <table className={styles.table}>
+          <thead>
+            <tr>
+              <th>Nombre</th>
+              <th>Apellido</th>
+              <th>Edad</th>
+              <th>Cedula</th>
+              <th> </th>
             </tr>
-          ))}
-        </tbody>
-      </table>
-
-      <Modal isOpen={isModalOpen} onClose={closeModal}>
-        {selectedItem && (
-          <div>
-            <form onSubmit={handleSubmit}>
-              <div>
-                <label htmlFor="nombre">Nombre:</label>
-                <input
-                  id="nombre"
-                  name="nombre"
-                  value={formValues.nombre}
-                  onChange={handleChange}
-                  required
-                />
-              </div>
-              <div>
-                <label htmlFor="apellido">Apellido:</label>
-                <input
-                  id="apellido"
-                  name="apellido"
-                  value={formValues.apellido}
-                  onChange={handleChange}
-                  required
-                />
-              </div>
-              <div>
-                <label htmlFor="edad">Edad:</label>
-                <input
-                  id="edad"
-                  name="edad"
-                  type="number"
-                  value={formValues.edad}
-                  onChange={handleChange}
-                  required
-                />
-              </div>
-              <div>
-                <button type="submit">Actualizar</button>
-                <button type="button" onClick={closeModal}>
-                  Cerrar
-                </button>
-              </div>
-            </form>
-          </div>
-        )}
-      </Modal>
-    </div>
+          </thead>
+          <tbody>
+            {users.map((item) => (
+              <tr key={item.cedula}>
+                <td>{item.nombre}</td>
+                <td>{item.apellido}</td>
+                <td>{item.edad}</td>
+                <td>{item.cedula}</td>
+                <td>
+                  <button
+                    className={styles.button}
+                    onClick={() => openModal(item)}
+                  >
+                    Editar
+                  </button>
+                  <button
+                    className={styles.button3}
+                    onClick={() => handleDelete(item)}
+                  >
+                    Eliminar
+                  </button>
+                </td>
+              </tr>
+            ))}
+          </tbody>
+        </table>
+        <Modal isOpen={isModalOpen} onClose={closeModal}>
+          {selectedItem && (
+            <div className={styles.modal1}>
+              <form onSubmit={handleSubmit}>
+                <div className={styles.modalcontent}>
+                  <div className={styles.modalcontent2}>
+                    <label htmlFor="nombre">Nombre:</label>
+                    <input
+                      className={styles.input}
+                      id="nombre"
+                      name="nombre"
+                      value={formValues.nombre}
+                      onChange={handleChange}
+                      required
+                    />
+                  </div>
+                  <div className={styles.modalcontent2}>
+                    <label htmlFor="apellido">Apellido:</label>
+                    <input
+                      className={styles.input}
+                      type="text"
+                      id="apellido"
+                      name="apellido"
+                      value={formValues.apellido}
+                      onChange={handleChange}
+                      required
+                    />
+                  </div>
+                  <div className={styles.modalcontent2}>
+                    <label htmlFor="edad">Edad:</label>
+                    <input
+                      className={styles.input}
+                      id="edad"
+                      name="edad"
+                      type="number"
+                      value={formValues.edad}
+                      onChange={handleChange}
+                      required
+                    />
+                  </div>
+                  <div>
+                    <button className={styles.button} type="submit">
+                      Actualizar
+                    </button>
+                    <button
+                      className={styles.button2}
+                      type="button"
+                      onClick={closeModal}
+                    >
+                      Cerrar
+                    </button>
+                  </div>
+                </div>
+              </form>
+            </div>
+          )}
+        </Modal>
+        <NavPage />
+      </div>
+    </>
   );
 }

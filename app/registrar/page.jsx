@@ -1,5 +1,8 @@
 "use client";
 import { useState } from "react";
+import { useRouter } from "next/navigation";
+import styles from "@/app/ver/Page.module.css";
+import NavBar from "@/components/navbar";
 
 const Registrar = () => {
   const [nombre, setNombre] = useState("");
@@ -7,6 +10,7 @@ const Registrar = () => {
   const [edad, setEdad] = useState("");
   const [cedula, setCedula] = useState("");
   const [error, setError] = useState("");
+  const router = useRouter();
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -31,6 +35,7 @@ const Registrar = () => {
 
       const data = await response.json();
       console.log(data.message);
+      router.push("/");
 
       // Limpiar el formulario
       setNombre("");
@@ -44,50 +49,74 @@ const Registrar = () => {
   };
 
   return (
-    <form onSubmit={handleSubmit}>
-      <div>
-        <label htmlFor="nombre">Nombre:</label>
-        <input
-          type="text"
-          id="nombre"
-          value={nombre}
-          onChange={(e) => setNombre(e.target.value)}
-          required
-        />
+    <>
+      <div className={styles.container}>
+        <h1>Registrar Datos</h1>
+        <NavBar />
       </div>
-      <div>
-        <label htmlFor="apellido">Apellido:</label>
-        <input
-          type="text" //
-          id="apellido"
-          value={apellido}
-          onChange={(e) => setApellido(e.target.value)}
-          required
-        />
+      <div
+        style={{
+          display: "flex",
+          flexDirection: "column",
+          alignItems: "center",
+          gap: "20px",
+          marginTop: "50px",
+        }}
+      >
+        <form onSubmit={handleSubmit}>
+          <div className={styles.container}>
+            <div className={styles.containerinputs}>
+              <label htmlFor="nombre"> Nombre:</label>
+              <input
+                className={styles.input}
+                type="text"
+                id="nombre"
+                value={nombre}
+                onChange={(e) => setNombre(e.target.value)}
+                required
+              />
+            </div>
+            <div className={styles.containerinputs}>
+              <label htmlFor="apellido">Apellido:</label>
+              <input
+                className={styles.input}
+                type="text" //
+                id="apellido"
+                value={apellido}
+                onChange={(e) => setApellido(e.target.value)}
+                required
+              />
+            </div>
+            <div className={styles.containerinputs}>
+              <label htmlFor="edad">Edad: </label>
+              <input
+                className={styles.input}
+                type="number"
+                id="edad"
+                value={edad}
+                onChange={(e) => setEdad(e.target.value)}
+                required
+              />
+            </div>
+            <div className={styles.containerinputs}>
+              <label htmlFor="cedula">Cédula: </label>
+              <input
+                className={styles.input}
+                type="number"
+                id="cedula"
+                value={cedula}
+                onChange={(e) => setCedula(e.target.value)}
+                required
+              />
+            </div>
+            <button className={styles.button} type="submit">
+              Registrar
+            </button>
+            {error && <p>{error}</p>}
+          </div>
+        </form>
       </div>
-      <div>
-        <label htmlFor="edad">Edad:</label>
-        <input
-          type="number"
-          id="edad"
-          value={edad}
-          onChange={(e) => setEdad(e.target.value)}
-          required
-        />
-      </div>
-      <div>
-        <label htmlFor="cedula">Cédula:</label>
-        <input
-          type="number"
-          id="cedula"
-          value={cedula}
-          onChange={(e) => setCedula(e.target.value)}
-          required
-        />
-      </div>
-      <button type="submit">Registrar</button>
-      {error && <p>{error}</p>}
-    </form>
+    </>
   );
 };
 
