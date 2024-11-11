@@ -4,10 +4,10 @@ import { useEffect, useState } from "react";
 import styles from "@/app/ver/Page.module.css";
 import NavBar from "@/components/navbar";
 import { useRouter } from "next/navigation";
-import NavPage from "@/components/Pagination";
+import ItemsPage from "@/components/Pagination";
 
 export default function HomePage() {
-  const [data, setData] = useState([]);
+  const [data, setData] = useState({ items: [] });
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [selectedItem, setSelectedItem] = useState(null);
   const [formValues, setFormValues] = useState({
@@ -43,27 +43,15 @@ export default function HomePage() {
     }
   };
 
-  /*Para la barra de paginación*/
-  // const MyComponent = () => {
-  //   const router = useRouter();
-
-  //   const handleNavigationRight = () => {
-  //     router.push("/ver" + 1);
-  //   };
-  //   const handleNavigationLeft = () => {
-  //     router.push("/ver" - 1);
-  //   };
-  // };
-
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const response = await fetch("/api/ver");
+        const response = await fetch("/api/ver?page=1");
         if (!response.ok) {
           throw new Error("Error al obtener los datos");
         }
         const result = await response.json();
-        setData(result);
+        setData({ items: result.items || [] });
       } catch (error) {
         console.error("Error fetching data:", error);
       }
@@ -145,7 +133,7 @@ export default function HomePage() {
             </tr>
           </thead>
           <tbody>
-            {users.map((item) => (
+            {data.items.map((item) => (
               <tr key={item.cedula}>
                 <td>{item.nombre}</td>
                 <td>{item.apellido}</td>
@@ -226,7 +214,7 @@ export default function HomePage() {
             </div>
           )}
         </Modal>
-        <NavPage />
+        <ItemsPage />
       </div>
     </>
   );
