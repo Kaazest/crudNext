@@ -3,7 +3,7 @@ import Modal from "@/components/Modal";
 import { useEffect, useState } from "react";
 import styles from "@/app/ver/Page.module.css";
 import NavBar from "@/components/navbar";
-import { useRouter } from "next/navigation";
+import { useRouter, useSearchParams } from "next/navigation";
 import ItemsPage from "@/components/Pagination";
 
 export default function HomePage() {
@@ -16,6 +16,9 @@ export default function HomePage() {
     edad: "",
   });
   const users = data.users || [];
+  const searchParams = useSearchParams();
+  const page = parseInt(searchParams.get("page")) || 1;
+  const [totalPages, setTotalPages] = useState(1);
 
   const handleDelete = async (item) => {
     const confirmDelete = window.confirm(
@@ -46,12 +49,16 @@ export default function HomePage() {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const response = await fetch("/api/ver?page=1");
+        const response = await fetch(`/api/ver?page=${page}`);
         if (!response.ok) {
           throw new Error("Error al obtener los datos");
         }
         const result = await response.json();
-        setData({ items: result.items || [] });
+        //console.log(result);
+        setData({ items: result.users || [] });
+        const aux = result.listUsers.length;
+        //console.log(aux);
+        setTotalPages(aux);
       } catch (error) {
         console.error("Error fetching data:", error);
       }
@@ -214,7 +221,7 @@ export default function HomePage() {
             </div>
           )}
         </Modal>
-        <ItemsPage />
+        <ItemsPage usuarios={data.items} paginas={totalPages} />
       </div>
     </>
   );

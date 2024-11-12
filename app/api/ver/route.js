@@ -7,6 +7,8 @@ export async function GET(req) {
   const offset = (page - 1) * limit;
 
   try {
+    const allUsers = await pool.query("SELECT * FROM usuario");
+    const listUsers = allUsers.rows;
     const usersResult = await pool.query(
       "SELECT * FROM usuario LIMIT $1 OFFSET $2",
       [limit, offset]
@@ -22,7 +24,7 @@ export async function GET(req) {
     return new Response(
       JSON.stringify({
         users,
-        items,
+        listUsers,
         total,
         totalPages: Math.ceil(total / limit),
       }),
