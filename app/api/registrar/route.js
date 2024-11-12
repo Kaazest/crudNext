@@ -1,5 +1,4 @@
-import { pool } from "../../lib/dbConnect";
-
+import { pool } from "@/app/lib/dbConnect";
 export async function GET(request) {
   // Manejar la solicitud GET para debug
   return new Response(JSON.stringify({ message: "GET request received" }), {

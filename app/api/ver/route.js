@@ -1,9 +1,9 @@
-import { pool } from "../../lib/dbConnect";
+import { pool } from "@/app/lib/dbConnect";
 
 export async function GET(req) {
   const { searchParams } = new URL(req.url);
   const page = parseInt(searchParams.get("page")) || 1; // Convertir a número
-  const limit = parseInt(searchParams.get("limit")) || 10; // Convertir a número
+  const limit = parseInt(searchParams.get("limit")) || 2; // Convertir a número
   const offset = (page - 1) * limit;
 
   try {

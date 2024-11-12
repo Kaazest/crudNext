@@ -1,12 +1,11 @@
 import { Pool } from "pg";
 
 const pool = new Pool({
-  user: "aaron",
-  host: "localhost",
-  database: "crud_db",
-  password: "123456",
-  port: 5432,
-
+  user: 'db_login', 
+  host: 'localhost', 
+  database: 'database', 
+  password: '123456', 
+  port: 5432, 
 });
 
 // Función para conectar a la base de datos

@@ -1,5 +1,4 @@
 import { pool } from "@/app/lib/dbConnect";
-
 export async function GET(req) {
   try {
     const res = await pool.query("SELECT * FROM usuarios");

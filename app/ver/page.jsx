@@ -16,6 +16,7 @@ export default function HomePage() {
     edad: "",
   });
   const users = data.users || [];
+  
 
   const handleDelete = async (item) => {
     const confirmDelete = window.confirm(
