@@ -1,5 +1,3 @@
-import NavBar from "@/components/navbar";
-
 export const metadata = {
   title: "Crud",
   description: "",
