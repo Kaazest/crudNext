@@ -3,31 +3,19 @@ import { pool } from "../../lib/dbConnect";
 export async function GET(req) {
   const { searchParams } = new URL(req.url);
   const page = parseInt(searchParams.get("page")) || 1; // Convertir a número
-  const limit = parseInt(searchParams.get("limit")) || 10; // Convertir a número
-  const offset = (page - 1) * limit;
 
   try {
-    const allUsers = await pool.query("SELECT * FROM usuario");
+    const allUsers = await pool.query(
+      "SELECT * FROM usuario WHERE cedula = $1",
+      [cedula]
+    );
     const listUsers = allUsers.rows;
-
-    const usersResult = await pool.query(
-      "SELECT * FROM usuario LIMIT $1 OFFSET $2",
-      [limit, offset]
-    );
-    const users = usersResult.rows;
-
-    const itemsResult = usersResult;
-    const items = itemsResult.rows;
-    const totalResult = await pool.query(
-      "SELECT COUNT(*) AS total FROM usuario"
-    );
     const total = totalResult.rows[0].total;
     return new Response(
       JSON.stringify({
         users,
         listUsers,
         total,
-        totalPages: Math.ceil(total / limit),
       }),
       {
         status: 200,

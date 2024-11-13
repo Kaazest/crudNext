@@ -5,6 +5,7 @@ import styles from "@/app/ver/Page.module.css";
 import NavBar from "@/components/navbar";
 import { useRouter, useSearchParams } from "next/navigation";
 import ItemsPage from "@/components/Pagination";
+import SearchBar from "@/components/SearchBar";
 
 export default function HomePage() {
   const [data, setData] = useState({ items: [] });
@@ -19,7 +20,23 @@ export default function HomePage() {
   const searchParams = useSearchParams();
   const page = parseInt(searchParams.get("page")) || 1;
   const [totalPages, setTotalPages] = useState(1);
+  const [results, setResults] = useState({ items: [] });
 
+  const handleSearch = async (query) => {
+    if (!query) return;
+    /*PARA BUSCAR */
+    try {
+      const response = await fetch(`/api/ver?query=${query}`);
+      const result = await response.json();
+      setResults({ items: result.users || [] });
+      if (results) {
+        setData({ items: result.users });
+      }
+      console.log(query);
+    } catch (error) {
+      console.error("Error al buscar:", error);
+    }
+  };
   const handleDelete = async (item) => {
     const confirmDelete = window.confirm(
       "¿Estás seguro de que deseas eliminar este usuario?"
@@ -54,7 +71,6 @@ export default function HomePage() {
           throw new Error("Error al obtener los datos");
         }
         const result = await response.json();
-        //console.log(result);
         setData({ items: result.users || [] });
         const aux = result.listUsers.length;
         //console.log(aux);
@@ -65,7 +81,7 @@ export default function HomePage() {
     };
 
     fetchData();
-  }, []);
+  }, [page]);
 
   const openModal = (item) => {
     setSelectedItem(item);
@@ -120,6 +136,7 @@ export default function HomePage() {
         <h1>Datos</h1>
         <NavBar />
       </div>
+
       <div
         style={{
           display: "flex",
@@ -129,6 +146,7 @@ export default function HomePage() {
           marginTop: "50px",
         }}
       >
+        <SearchBar onSearch={handleSearch} />
         <table className={styles.table}>
           <thead>
             <tr>
