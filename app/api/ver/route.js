@@ -1,12 +1,15 @@
-import { pool } from "@/app/lib/dbConnect";
+import { pool } from "../../lib/dbConnect";
 
 export async function GET(req) {
   const { searchParams } = new URL(req.url);
   const page = parseInt(searchParams.get("page")) || 1; // Convertir a número
-  const limit = parseInt(searchParams.get("limit")) || 2; // Convertir a número
+  const limit = parseInt(searchParams.get("limit")) || 10; // Convertir a número
   const offset = (page - 1) * limit;
+  const searchQuery = searchParams.get("search") || "";
 
   try {
+    const allUsers = await pool.query("SELECT * FROM usuario");
+    const listUsers = allUsers.rows;
     const usersResult = await pool.query(
       "SELECT * FROM usuario LIMIT $1 OFFSET $2",
       [limit, offset]
@@ -22,7 +25,7 @@ export async function GET(req) {
     return new Response(
       JSON.stringify({
         users,
-        items,
+        listUsers,
         total,
         totalPages: Math.ceil(total / limit),
       }),

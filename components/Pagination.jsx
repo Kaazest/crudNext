@@ -1,78 +1,53 @@
 "use client";
-import { useEffect, useState, useCallback } from "react";
+import { useEffect, useState } from "react";
 import { useRouter, useSearchParams } from "next/navigation";
 import styles from "@/components/Pagination.module.css";
 
-const ItemsPage = () => {
+const ItemsPage = ({ usuarios, paginas }) => {
   const router = useRouter();
   const searchParams = useSearchParams();
   const page = parseInt(searchParams.get("page")) || 1;
-  const [items, setItems] = useState([]);
-  const [totalPages, setTotalPages] = useState(0);
-  const [loading, setLoading] = useState(true);
-  const [currentPage, setCurrentPage] = useState(page);
+  const itemsPerPage = 10;
+  const totalPages = Math.ceil(paginas / itemsPerPage);
 
-  const fetchItems = useCallback(async (page = 1) => {
-    setLoading(true);
-    try {
-      const res = await fetch(`/api/ver?page=${page}`);
-      if (!res.ok) {
-        throw new Error(`Error en la respuesta de la API: ${res.status} ${res.statusText}`);
-      }
-      const data = await res.json();
-      setItems(data.items || []);
-      setTotalPages(data.totalPages || 0);
-      setCurrentPage(page);
-    } catch (error) {
-      console.error("Error al obtener los items:", error);
-      setItems([]);
-    } finally {
-      setLoading(false);
-    }
-  }, []);
+  //console.log("############");
+  //console.log(usuarios); //Para debug
 
-  useEffect(() => {
-    fetchItems(page);
-  }, [fetchItems, page]);
-
-  const handlePageChange = (pageNumber) => {
-    router.push(`/ver?page=${pageNumber}`);
-  };
-
-  if (loading) return <div>Cargando...</div>;
+  //if (loading) return <div>Cargando...</div>;
 
   return (
     <div>
       <ul className={styles.pagination}>
         <li>
           <a
-            href="#"
+            href="javascript:void(0)"
             onClick={(e) => {
               e.preventDefault();
-              handlePageChange(Math.max(currentPage - 1, 1));
+              router.push(`/ver?page=${Math.max(page - 1, 1)}`);
             }}
           >
             &laquo; Anterior
           </a>
         </li>
         {Array.from({ length: totalPages }, (_, i) => (
-          <li
-            key={i + 1}
-            className={i + 1 === currentPage ? "active" : ""}
-            onClick={(e) => {
-              e.preventDefault();
-              handlePageChange(i + 1);
-            }}
-          >
-            <a href="#">{i + 1}</a>
+          <li key={i + 1} className={i + 1 === page ? "active" : ""}>
+            <a
+              href="javascript:void(0)"
+              onClick={(e) => {
+                e.preventDefault();
+                router.push(`/ver?page=${i + 1}`);
+              }}
+            >
+              {i + 1}
+            </a>
           </li>
         ))}
         <li>
           <a
-            href="#"
+            href="javascript:void(0)"
             onClick={(e) => {
               e.preventDefault();
-              handlePageChange(Math.min(currentPage + 1, totalPages));
+              router.push(`/ver?page=${Math.min(page + 1, totalPages)}`);
             }}
           >
             Siguiente &raquo;
@@ -84,4 +59,3 @@ const ItemsPage = () => {
 };
 
 export default ItemsPage;
-

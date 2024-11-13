@@ -3,8 +3,9 @@ import Modal from "@/components/Modal";
 import { useEffect, useState } from "react";
 import styles from "@/app/ver/Page.module.css";
 import NavBar from "@/components/navbar";
-import { useRouter } from "next/navigation";
+import { useRouter, useSearchParams } from "next/navigation";
 import ItemsPage from "@/components/Pagination";
+import SearchBar from "@/components/SearchBar";
 
 export default function HomePage() {
   const [data, setData] = useState({ items: [] });
@@ -16,8 +17,22 @@ export default function HomePage() {
     edad: "",
   });
   const users = data.users || [];
-  
+  const searchParams = useSearchParams();
+  const page = parseInt(searchParams.get("page")) || 1;
+  const [totalPages, setTotalPages] = useState(1);
+  const [results, setResults] = useState([]); 
 
+  const handleSearch = async (query) => {
+    if (!query) return;
+
+    try {
+      const response = await fetch(`/api/search?query=${query}`);
+      const data = await response.json();
+      setResults(data);
+    } catch (error) {
+      console.error('Error al buscar:', error);
+    }
+  };
   const handleDelete = async (item) => {
     const confirmDelete = window.confirm(
       "¿Estás seguro de que deseas eliminar este usuario?"
@@ -47,19 +62,23 @@ export default function HomePage() {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const response = await fetch("/api/ver?page=1");
+        const response = await fetch(`/api/ver?page=${page}`);
         if (!response.ok) {
           throw new Error("Error al obtener los datos");
         }
         const result = await response.json();
-        setData({ items: result.items || [] });
+        //console.log(result);
+        setData({ items: result.users || [] });
+        const aux = result.listUsers.length;
+        //console.log(aux);
+        setTotalPages(aux);
       } catch (error) {
         console.error("Error fetching data:", error);
       }
     };
 
     fetchData();
-  }, []);
+  }, [page]);
 
   const openModal = (item) => {
     setSelectedItem(item);
@@ -123,6 +142,7 @@ export default function HomePage() {
           marginTop: "50px",
         }}
       >
+        <SearchBar onSearch={handleSearch} />
         <table className={styles.table}>
           <thead>
             <tr>
@@ -215,7 +235,7 @@ export default function HomePage() {
             </div>
           )}
         </Modal>
-        <ItemsPage />
+        <ItemsPage usuarios={data.items} paginas={totalPages} />
       </div>
     </>
   );
