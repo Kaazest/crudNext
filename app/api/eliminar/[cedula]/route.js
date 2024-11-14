@@ -1,7 +1,7 @@
 import { pool } from "@/app/lib/dbConnect";
 
 export async function DELETE(req, { params }) {
-  const { cedula } = params;
+  const { cedula } = await params;
 
   try {
     const result = await pool.query(

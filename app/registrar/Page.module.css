@@ -90,6 +90,7 @@
   border: 1px solid #ccc;
   border-radius: 5px;
   font-size: 16px;
+  /* margin-left: 200px; */
   width: 200px;
   flex: 1;
 }

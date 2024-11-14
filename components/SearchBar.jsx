@@ -1,22 +1,22 @@
 import { useState } from "react";
 import { useSearchParams, usePathname, useRouter } from "next/navigation";
 
-const SearchBar = ({ onSearch }) => {
+const SearchBar = ({ onSearch, onChange }) => {
   const [query, setQuery] = useState("");
   const searchParams = useSearchParams();
   const pathname = usePathname();
   const { replace } = useRouter();
-  //console.log(searchParams.get("page"));
+
   const handleInputChange = (e) => {
     const params = new URLSearchParams(searchParams.toString());
 
-    //console.log(params);
     if (e) {
       params.set("query", e.target.value);
     } else {
       params.delete("query");
     }
     replace(`${pathname}?${params.toString()}`);
+    //onChange(e.target.value); PARA ACTUALIZAR DESDE EL INPUT
     setQuery(e.target.value);
   };
 
@@ -24,7 +24,6 @@ const SearchBar = ({ onSearch }) => {
     e.preventDefault();
     onSearch(query);
   };
-  //console.log(query);
 
   return (
     <form
@@ -35,7 +34,7 @@ const SearchBar = ({ onSearch }) => {
         type="text"
         value={query}
         onChange={handleInputChange}
-        placeholder="Buscar..."
+        placeholder="Buscar por cedula..."
         style={{
           padding: "8px",
           borderRadius: "4px",

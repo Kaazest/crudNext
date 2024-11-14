@@ -20,23 +20,23 @@ export default function HomePage() {
   const searchParams = useSearchParams();
   const page = parseInt(searchParams.get("page")) || 1;
   const [totalPages, setTotalPages] = useState(1);
-  const [results, setResults] = useState({ items: [] });
-
+  // const [results, setResults] = useState({ items: [] });
+  const route = useRouter();
   const handleSearch = async (query) => {
     if (!query) return;
-    /*PARA BUSCAR */
+
     try {
       const response = await fetch(`/api/ver?query=${query}`);
-      const result = await response.json();
-      setResults({ items: result.users || [] });
-      if (results) {
-        setData({ items: result.users });
+      if (!response.ok) {
+        throw new Error("Error en la respuesta de la API");
       }
-      console.log(query);
+      const result = await response.json();
+      setData({ items: result.users || [] });
     } catch (error) {
       console.error("Error al buscar:", error);
     }
   };
+
   const handleDelete = async (item) => {
     const confirmDelete = window.confirm(
       "¿Estás seguro de que deseas eliminar este usuario?"
@@ -56,8 +56,9 @@ export default function HomePage() {
       }
 
       // Actualiza el estado local
-      const updatedData = users.filter((user) => user.cedula !== item.cedula);
-      setData(updatedData);
+      // const updatedData = users.filter((user) => user.cedula !== item.cedula);
+      // setData(updatedData);
+      route.push(`/ver`);
     } catch (error) {
       console.error("Error al eliminar datos:", error);
     }
@@ -73,7 +74,7 @@ export default function HomePage() {
         const result = await response.json();
         setData({ items: result.users || [] });
         const aux = result.listUsers.length;
-        //console.log(aux);
+
         setTotalPages(aux);
       } catch (error) {
         console.error("Error fetching data:", error);
@@ -118,12 +119,12 @@ export default function HomePage() {
       if (!response.ok) {
         throw new Error("Error al actualizar los datos");
       }
-
+      route.push(`/ver`);
       // Actualiza el estado local
-      const updatedData = users.map((item) =>
-        item.cedula === selectedItem.cedula ? { ...item, ...formValues } : item
-      );
-      setData(updatedData);
+      // const updatedData = users.map((item) =>
+      //   item.cedula === selectedItem.cedula ? { ...item, ...formValues } : item
+      // );
+      // setData(updatedData);
       closeModal();
     } catch (error) {
       console.error("Error al actualizar datos:", error);
@@ -146,7 +147,7 @@ export default function HomePage() {
           marginTop: "50px",
         }}
       >
-        <SearchBar onSearch={handleSearch} />
+        <SearchBar onSearch={handleSearch} onChange={handleSearch} />
         <table className={styles.table}>
           <thead>
             <tr>

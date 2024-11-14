@@ -1,24 +1,5 @@
 import { pool } from "@/app/lib/dbConnect";
 
-export async function GET(req) {
-  try {
-    const res = await pool.query("SELECT * FROM usuarios");
-    return new Response(JSON.stringify(res.rows), {
-      status: 200,
-      headers: { "Content-Type": "application/json" },
-    });
-  } catch (error) {
-    console.error(error);
-    return new Response(
-      JSON.stringify({ error: "Error al obtener los datos" }),
-      {
-        status: 500,
-        headers: { "Content-Type": "application/json" },
-      }
-    );
-  }
-}
-
 export async function PUT(req, { params }) {
   try {
     const cedula = new URL(req.url).pathname.split("/").pop();
