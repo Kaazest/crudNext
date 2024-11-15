@@ -58,10 +58,10 @@ export default function HomePage() {
       // Actualiza el estado local
       // const updatedData = users.filter((user) => user.cedula !== item.cedula);
       // setData(updatedData);
-      route.push(`/ver`);
     } catch (error) {
       console.error("Error al eliminar datos:", error);
     }
+    route.push(`/ver?page&query=1`);
   };
 
   useEffect(() => {
@@ -119,13 +119,14 @@ export default function HomePage() {
       if (!response.ok) {
         throw new Error("Error al actualizar los datos");
       }
-      route.push(`/ver`);
+
       // Actualiza el estado local
       // const updatedData = users.map((item) =>
       //   item.cedula === selectedItem.cedula ? { ...item, ...formValues } : item
       // );
       // setData(updatedData);
       closeModal();
+      route.push(`/ver`);
     } catch (error) {
       console.error("Error al actualizar datos:", error);
     }

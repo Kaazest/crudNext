@@ -66,8 +66,10 @@ const Registrar = () => {
         <form onSubmit={handleSubmit}>
           <div className={styles.container}>
             <div className={styles.containerinputs}>
-              <label htmlFor="nombre"> Nombre:</label>
-              <div className="flex">
+              <div className={styles.label}>
+                <label htmlFor="nombre"> Nombre:</label>
+              </div>
+              <div className={styles.containerinputs}>
                 <input
                   className={styles.input}
                   type="text"
@@ -96,7 +98,8 @@ const Registrar = () => {
             </div>
             <div className={styles.containerinputs}>
               <label htmlFor="edad">Edad: </label>
-              <div className="flex">
+
+              <div>
                 <input
                   className={styles.input}
                   type="number"
@@ -110,7 +113,7 @@ const Registrar = () => {
             </div>
             <div className={styles.containerinputs}>
               <label htmlFor="cedula">Cédula: </label>
-              <div className="flex align-items:center">
+              <div>
                 <input
                   className={styles.input}
                   placeholder="Ingrese su cédula..."
