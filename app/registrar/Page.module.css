@@ -9,12 +9,12 @@
   box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
 }
 .containerinputs {
-  display: flex;
+  /* display: flex; */
   background-color: #ff0000;
   padding: 20px;
   box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
   flex-direction: column; /* Alinea los elementos en columna */
-  gap: 10px; /* Espacio entre los grupos de label e input */
+  /* gap: 10px; Espacio entre los grupos de label e input */
 }
 
 .containerinputs div {

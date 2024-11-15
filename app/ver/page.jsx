@@ -194,6 +194,7 @@ export default function HomePage() {
                       className={styles.input}
                       id="nombre"
                       name="nombre"
+                      placeholder="Ingrese el nombre..."
                       value={formValues.nombre}
                       onChange={handleChange}
                       required
@@ -206,6 +207,7 @@ export default function HomePage() {
                       type="text"
                       id="apellido"
                       name="apellido"
+                      placeholder="Ingrese el apellido..."
                       value={formValues.apellido}
                       onChange={handleChange}
                       required
@@ -218,6 +220,7 @@ export default function HomePage() {
                       id="edad"
                       name="edad"
                       type="number"
+                      placeholder="Ingrese la edad..."
                       value={formValues.edad}
                       onChange={handleChange}
                       required

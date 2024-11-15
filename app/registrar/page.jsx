@@ -67,47 +67,60 @@ const Registrar = () => {
           <div className={styles.container}>
             <div className={styles.containerinputs}>
               <label htmlFor="nombre"> Nombre:</label>
-              <input
-                className={styles.input}
-                type="text"
-                id="nombre"
-                value={nombre}
-                onChange={(e) => setNombre(e.target.value)}
-                required
-              />
+              <div className="flex">
+                <input
+                  className={styles.input}
+                  type="text"
+                  id="nombre"
+                  placeholder="Ingrese su nombre..."
+                  value={nombre}
+                  onChange={(e) => setNombre(e.target.value)}
+                  required
+                />
+              </div>
             </div>
+
             <div className={styles.containerinputs}>
               <label htmlFor="apellido">Apellido:</label>
-              <input
-                className={styles.input}
-                type="text" //
-                id="apellido"
-                value={apellido}
-                onChange={(e) => setApellido(e.target.value)}
-                required
-              />
+              <div className="flex">
+                <input
+                  className={styles.input}
+                  placeholder="Ingrese su apellido..."
+                  type="text" //
+                  id="apellido"
+                  value={apellido}
+                  onChange={(e) => setApellido(e.target.value)}
+                  required
+                />
+              </div>
             </div>
             <div className={styles.containerinputs}>
               <label htmlFor="edad">Edad: </label>
-              <input
-                className={styles.input}
-                type="number"
-                id="edad"
-                value={edad}
-                onChange={(e) => setEdad(e.target.value)}
-                required
-              />
+              <div className="flex">
+                <input
+                  className={styles.input}
+                  type="number"
+                  placeholder="Ingrese su edad..."
+                  id="edad"
+                  value={edad}
+                  onChange={(e) => setEdad(e.target.value)}
+                  required
+                />
+              </div>
             </div>
             <div className={styles.containerinputs}>
               <label htmlFor="cedula">Cédula: </label>
-              <input
-                className={styles.input}
-                type="number"
-                id="cedula"
-                value={cedula}
-                onChange={(e) => setCedula(e.target.value)}
-                required
-              />
+              <div className="flex align-items:center">
+                <input
+                  className={styles.input}
+                  placeholder="Ingrese su cédula..."
+                  type="number"
+                  id="cedula"
+                  value={cedula}
+                  onChange={(e) => setCedula(e.target.value)}
+                  required
+                />
+              </div>
             </div>
             <button className={styles.button} type="submit">
               Registrar

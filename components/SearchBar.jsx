@@ -31,7 +31,7 @@ const SearchBar = ({ onSearch, onChange }) => {
       style={{ display: "flex", alignItems: "center" }}
     >
       <input
-        type="text"
+        type="number"
         value={query}
         onChange={handleInputChange}
         placeholder="Buscar por cedula..."
