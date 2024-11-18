@@ -22,6 +22,7 @@ export default function HomePage() {
   const [totalPages, setTotalPages] = useState(1);
   // const [results, setResults] = useState({ items: [] });
   const route = useRouter();
+
   const handleSearch = async (query) => {
     if (!query) return;
 
@@ -54,14 +55,16 @@ export default function HomePage() {
       if (!response.ok) {
         throw new Error("Error al eliminar los datos");
       }
-
-      // Actualiza el estado local
-      // const updatedData = users.filter((user) => user.cedula !== item.cedula);
-      // setData(updatedData);
+      //Actualizar el estado después de eliminar el dato
+      const responseData = await fetch(`/api/ver?page=${page}`);
+      const result = await responseData.json();
+      // console.log(result);
+      setData(result);
     } catch (error) {
       console.error("Error al eliminar datos:", error);
     }
-    route.push(`/ver?page&query=1`);
+
+    // route.push(`/ver`);
   };
 
   useEffect(() => {
@@ -119,6 +122,11 @@ export default function HomePage() {
       if (!response.ok) {
         throw new Error("Error al actualizar los datos");
       }
+      const responseData = await fetch(`/api/ver?page=${page}`);
+      const result = await responseData.json();
+      // console.log(result);
+      setData(result);
+      // route.refresh();
 
       // Actualiza el estado local
       // const updatedData = users.map((item) =>
@@ -126,7 +134,6 @@ export default function HomePage() {
       // );
       // setData(updatedData);
       closeModal();
-      route.push(`/ver`);
     } catch (error) {
       console.error("Error al actualizar datos:", error);
     }

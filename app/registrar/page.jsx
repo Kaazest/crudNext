@@ -34,7 +34,7 @@ const Registrar = () => {
       }
 
       const data = await response.json();
-      console.log(data.message);
+      // console.log(data.message);
       router.push("/");
 
       // Limpiar el formulario
